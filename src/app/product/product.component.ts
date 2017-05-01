@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-product',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
+  private productId: number;
+  private productName:string;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private routeInfo: ActivatedRoute) {
   }
 
+  ngOnInit() {
+    this.routeInfo.params.subscribe((params: Params) => this.productId = params["id"]);
+    this.routeInfo.data.subscribe((data:{product:Product})=>{
+      this.productId=data.product.id;
+      this.productName=data.product.name;
+    })
+    // this.productId = this.routeInfo.snapshot.params["id"];
+  }
+}
+export class Product {
+  constructor(public id: number, public name: string) {
+  }
 }
